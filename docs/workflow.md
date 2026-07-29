@@ -30,8 +30,8 @@ scikit-learn
 3.  **TF-IDF Candidate Generation (The Fallback):** For `missing_coords`, use `sklearn.feature_extraction.text.TfidfVectorizer` on a concatenated string of `name + address`. Compute cosine similarity to extract Candidate Pool 2 (pairs with TF-IDF score > 0.6).
 4.  **Lexical Clean-up & Star Defense:** Combine both candidate pools. Strip generic prefixes ("Hotel O", "FabHotel"). Discard pairs where `abs(hotel_a.stars - hotel_b.stars) >= 2`.
 5.  **Semantic Embeddings:** Use `sentence-transformers/all-MiniLM-L6-v2` to generate embeddings for the cleaned hotel names and calculate cosine similarity.
-6.  **The Classifier & Near-Miss Routing:** Calculate a feature array: `[spatial_distance, string_similarity, embedding_cosine, star_diff]` (use 0 for spatial_distance if coordinates are missing). Pass into a weighted heuristic formula to get a `match_confidence` score (0.0 to 1.0).
-    *   **Score > 0.8:** Flag as a canonical match.
+6.  **The Classifier & Near-Miss Routing:** Calculate a feature array: `[dist_score, string_similarity, embedding_cosine]` (where `dist_score` normalizes `spatial_distance`, defaulting to 0.5 if coordinates are missing). Pass into a weighted heuristic formula to get a `match_confidence` score (0.0 to 1.0).
+    *   **Score >= 0.8:** Flag as a canonical match.
     *   **Score 0.4 to 0.79:** Save in a dictionary as `near_misses` linked to the Supplier A ID.
 
 ## 3. Phase 3: Batched Room Normalization & Spend Tracking
@@ -120,6 +120,12 @@ def process_batch(hotel_batch):
     except Exception as e:
         print(f"[Warning] Batch execution failed for size {len(hotel_batch)}: {e}")
         
+        # If it's a rate limit error, DO NOT split the batch. Just wait and retry.
+        if "429 Too Many Requests" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+            print("Rate limit hit! Waiting 30 seconds to cool down...")
+            time.sleep(30)
+            return process_batch(hotel_batch)
+            
         # Base case: single hotel failed completely
         if len(hotel_batch) == 1:
             print(f"[Error] Skipping unparseable hotel: {hotel_batch[0].get('canonical_hotel_id')}")
