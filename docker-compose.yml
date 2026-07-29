@@ -1,0 +1,20 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    environment:
+      - PORT=8000
+
+  pipeline:
+    build: 
+      context: .
+      dockerfile: Dockerfile.pipeline
+    volumes:
+      - ./:/app
+    env_file:
+      - .env

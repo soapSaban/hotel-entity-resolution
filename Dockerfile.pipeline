@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install only the heavy pipeline dependencies
+COPY pipeline_requirements.txt .
+RUN pip install --no-cache-dir -r pipeline_requirements.txt
+
+COPY . .
+
+# Command to execute the entire offline pipeline natively without wrapper scripts
+CMD ["sh", "-c", "python matcher.py && python run_normalizer.py && python build_db.py"]
