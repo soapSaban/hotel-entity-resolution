@@ -1,6 +1,8 @@
 # Hotel Entity Resolution API
 [![CI Pipeline](https://github.com/soapSaban/hotel-entity-resolution/actions/workflows/ci.yml/badge.svg)](https://github.com/soapSaban/hotel-entity-resolution/actions/workflows/ci.yml)
 
+🚀 **Live Demo:** [https://hotel-entity-resolution.onrender.com/](https://hotel-entity-resolution.onrender.com/)
+
 This repository contains a full pipeline and API for resolving and merging chaotic hotel supplier feeds into a clean, canonical data layer.
 
 It utilizes an offline processing pipeline that leverages Spatial KD-Trees, TF-IDF string matching, and a Machine Learning classifier for entity resolution, followed by an LLM-driven schema normalizer for room deduplication.
