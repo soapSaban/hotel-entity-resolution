@@ -17,7 +17,7 @@ Instead of discarding these, I dynamically inject them into the `near_miss_candi
 ### Q: What was the total API spend in dollars?
 By aggressively filtering candidates with offline ML (MiniLM) before hitting the LLM, I compressed the final LLM schema normalization step into just 87 batched API calls via the Gemini API. 
 
-Based on our `cost_tracker.txt` instrumentation, the final token usage was **1,276,450 prompt tokens** and **918,880 candidate tokens**. At standard Gemini 2.5 Flash pricing ($0.075 / 1M prompt, $0.30 / 1M output), the **total API spend was exactly $0.37**.
+Based on our `cost_tracker.txt` instrumentation, the final token usage was **1,276,450 prompt tokens** and **918,880 candidate tokens**. At standard Gemini 3.5 Flash-Lite pricing ($0.075 / 1M prompt, $0.30 / 1M output), the **total API spend was exactly $0.37**.
 
 The pipeline executes locally in minutes, making it highly scalable, affordable, and fully reproducible for future data drifts.
 
