@@ -131,6 +131,13 @@ def extract_features(candidates_df, df_a, df_b):
     merged = merged[merged['star_defense_pass']].copy()
     logger.info(f"Candidates remaining after Star Defense: {len(merged)}")
     
+    if merged.empty:
+        logger.info("All candidates were filtered out.")
+        final_cols = ['id_a', 'id_b', 'score', 'string_similarity', 'embedding_cosine', 'spatial_distance']
+        if 'tfidf_score' in merged.columns:
+            final_cols.append('tfidf_score')
+        return pd.DataFrame(columns=final_cols)
+        
     # Jaccard String Similarity
     def jaccard_sim(str1, str2):
         s1 = set(str1.split())
