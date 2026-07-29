@@ -1,5 +1,5 @@
 # Hotel Entity Resolution API
-[![CI Pipeline](https://github.com/soapSaban/hotel-app/actions/workflows/ci.yml/badge.svg)](https://github.com/soapSaban/hotel-app/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/soapSaban/hotel-entity-resolution/actions/workflows/ci.yml/badge.svg)](https://github.com/soapSaban/hotel-entity-resolution/actions/workflows/ci.yml)
 
 This repository contains a full pipeline and API for resolving and merging chaotic hotel supplier feeds into a clean, canonical data layer.
 
