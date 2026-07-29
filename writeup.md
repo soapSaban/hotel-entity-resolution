@@ -1,6 +1,8 @@
 # Engineering Write-Up: Architectural Decisions & Trade-Offs
 
 Rather than just summarizing the code, I wanted to walk you through the core engineering decisions, the trade-offs I weighed, and the "why" behind the pipeline design.
+### Q: Where is the final canonical output artifact?
+The final dataset that satisfies the submission requirement for an output artifact is **`canonical_hotels.json`**, located in the root of the repository. It contains the globally deduplicated JSON objects with full source-row provenance (`supplier_a_id`, `supplier_b_id`) and both hotel-level and room-level `match_confidence` scores. This single artifact powers the entire in-memory FastAPI application.
 
 ### Q: What was your approach and what did you discard?
 **What I discarded:** I immediately discarded the idea of an LLM-driven $O(N \times M)$ brute force comparison. Comparing 4,000 Supplier A hotels against 4,000 Supplier B hotels equates to over 13 million pairings. Pushing 13 million pairs through an LLM API would cost thousands of dollars, take weeks to process, and fail constantly due to rate limits. I also discarded binary exact-string matching, as real-world names ("Treebo Edha Suites" vs "Treebo Trend Edha") rarely match perfectly.
