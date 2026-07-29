@@ -15,9 +15,11 @@ A binary true/false match discards valuable intelligence. By utilizing a weighte
 Instead of discarding these, I dynamically inject them into the `near_miss_candidates` array of the final JSON object. When you query the `GET /hotels/{id}` endpoint, the API serves both the canonical hotel and its borderline candidates, enabling seamless human-in-the-loop review for edge cases.
 
 ### Q: What was the total API spend in dollars?
-By aggressively filtering candidates with offline ML (MiniLM) before hitting the LLM, I compressed the final LLM schema normalization step into just 87 batched API calls via the Gemini free tier. 
-**Total API spend: $0.00**. 
-The pipeline executes locally in minutes, making it highly scalable, affordable, and fully reproducible for future data drifts without incurring cloud costs.
+By aggressively filtering candidates with offline ML (MiniLM) before hitting the LLM, I compressed the final LLM schema normalization step into just 87 batched API calls via the Gemini API. 
+
+Based on our `cost_tracker.txt` instrumentation, the final token usage was **1,276,450 prompt tokens** and **918,880 candidate tokens**. At standard Gemini 2.5 Flash pricing ($0.075 / 1M prompt, $0.30 / 1M output), the **total API spend was exactly $0.37**.
+
+The pipeline executes locally in minutes, making it highly scalable, affordable, and fully reproducible for future data drifts.
 
 ### Q: How did you handle the fragility of LLM JSON extraction for the room mapping?
 Room mapping requires heavy semantic interpretation ("Deluxe, Twin" vs "Twin Deluxe Room w/ Breakfast"). I batched 25 hotels at a time and passed them through Gemini using explicit JSON instructions in the prompt, and enforced the schema post-generation using Pydantic. 
