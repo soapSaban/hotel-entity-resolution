@@ -23,6 +23,12 @@ However, if deployed in a paid production environment at standard Gemini 3.5 Fla
 
 The pipeline executes locally in minutes, making it highly scalable, affordable, and fully reproducible for future data drifts.
 
+### Q: How did you adapt to the LLM API rate limits to keep costs at $0.00 while maximizing productivity?
+The Gemini free tier has a strict rate limit of 15 Requests Per Minute (RPM). To stay purely within this tier without crashing the pipeline or losing data:
+1. **Batching:** Instead of sending 1 hotel per request (which would trigger rate limits instantly), I batched 25 hotels into a single prompt, massively increasing throughput.
+2. **Paced Throttling:** I implemented a hard `time.sleep(10)` between every request, ensuring a maximum velocity of 6 RPM, safely below the 15 RPM ceiling.
+3. **Dynamic Cooldowns:** If the API still returns a `429 Too Many Requests` or `RESOURCE_EXHAUSTED` error due to global Google server loads, the pipeline intercepts the specific exception, initiates an automatic 30-second cooldown, and retries the exact same batch without splitting it.
+
 ### Q: How did you handle the fragility of LLM JSON extraction for the room mapping?
 Room mapping requires heavy semantic interpretation ("Deluxe, Twin" vs "Twin Deluxe Room w/ Breakfast"). I batched 25 hotels at a time and passed them through Gemini using explicit JSON instructions in the prompt, and enforced the schema post-generation using Pydantic. 
 
