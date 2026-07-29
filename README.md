@@ -1,8 +1,5 @@
 # Hotel Entity Resolution API
 [![CI Pipeline](https://github.com/soapSaban/hotel-entity-resolution/actions/workflows/ci.yml/badge.svg)](https://github.com/soapSaban/hotel-entity-resolution/actions/workflows/ci.yml)
-
-🚀 **Live Demo:** [https://hotel-entity-resolution.onrender.com/](https://hotel-entity-resolution.onrender.com/)
-
 This repository contains a full pipeline and API for resolving and merging chaotic hotel supplier feeds into a clean, canonical data layer.
 
 It utilizes an offline processing pipeline that leverages Spatial KD-Trees, TF-IDF string matching, and a Machine Learning classifier for entity resolution, followed by an LLM-driven schema normalizer for room deduplication.
@@ -18,6 +15,9 @@ To launch the FastAPI server and the interactive frontend UI using the pre-compu
 docker compose up --build api
 ```
 The server will boot instantly on port `8000`. Once the container is running, open `http://localhost:8000/` in your browser to test the endpoints via the interactive UI.
+
+*(If you prefer not to use Docker, the exact same UI and API are live right now at [https://hotel-entity-resolution.onrender.com/](https://hotel-entity-resolution.onrender.com/))*
+
 
 ### 2. Re-run the Data Pipeline (Optional)
 If you wish to re-run the Entity Resolution and LLM normalizer pipeline from scratch against the raw CSVs, run:
