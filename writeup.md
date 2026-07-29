@@ -48,7 +48,7 @@ Instead of dropping these rows, I built a routing mechanism. Rows missing coordi
 ### Q: How did you convince yourself the matching works?
 I utilized a few layers of defense:
 1. **Star-Diff Hard Rejection:** I implemented a hard rejection rule. Even if the ML model thought the names and locations were identical, if both suppliers provided a valid star rating (>0) and `abs(star_diff) >= 2`, the match was instantly rejected. The test suite validates this with a 2-star vs 5-star pair (a 3-star gap), which the pipeline correctly drops.
-2. **Endpoint Spot-Checking:** I actively pulled deep payloads from the final `GET /hotels/{id}` API to manually verify that multi-supplier rooms were correctly linked and amenities were perfectly deduplicated. **You can verify this yourself using the auto-generated Swagger UI available at `http://localhost:8000/docs` once the Docker container is running (or by using the custom glassmorphism frontend served at the root `http://localhost:8000/`!).**
+2. **Endpoint Spot-Checking:** I actively pulled deep payloads from the final `GET /hotels/{id}` API to manually verify that multi-supplier rooms were correctly linked and amenities were perfectly deduplicated. **You can verify this yourself using the auto-generated UI available at `http://localhost:8000/docs` once the Docker container is running (or by using the custom glassmorphism frontend served at the root `http://localhost:8000/`!).**
 
 ### Q: If we scale this to 200,000 hotels across 3 suppliers, what breaks first?
 The current architecture will break in two specific places:
