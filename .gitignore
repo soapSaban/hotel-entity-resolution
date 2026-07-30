@@ -32,5 +32,6 @@ venv/
 # Temporary / Scratch data
 scratch/
 *.log
+!pipeline_execution.log
 .pytest_cache/
 temp.json
